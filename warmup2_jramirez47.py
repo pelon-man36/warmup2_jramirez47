@@ -17,6 +17,8 @@ class MyApp(ShowBase):
         self.accept("escape", self.quit)
         self.accept("arrow_left", self.negativeX, [1])
         self.accept("arrow_left-up", self.negativeX, [0])
+        self.accept("arrow_right", self.positiveX, [1])
+        self.accept("arrow_right-up", self.positiveX, [0])
 
         self.parent = self.loader.loadModel("./Assets/cube.egg")
 
@@ -42,6 +44,16 @@ class MyApp(ShowBase):
     def moveNegativeX(self, task):
         self.fighter.setX(self.fighter, - 1)
         return task.cont # Sets the task to continue next game cycle.
+
+    def positiveX(self, keyDown):
+        if keyDown:
+            self.taskMgr.add(self.movePositiveX, "movePositiveX")
+        else:
+            self.taskMgr.remove("movePositiveX")
+    
+    def movePositiveX(self, task):
+        self.fighter.setX(self.fighter, + 1)
+        return task.cont
 
     def quit(self):
         sys.exit()
