@@ -19,6 +19,8 @@ class MyApp(ShowBase):
         self.accept("arrow_left-up", self.negativeX, [0])
         self.accept("arrow_right", self.positiveX, [1])
         self.accept("arrow_right-up", self.positiveX, [0])
+        self.accept("arrow_down", self.negativeY, [1])
+        self.accept("arrow_down-up", self.negativeY, [0])
 
         self.parent = self.loader.loadModel("./Assets/cube.egg")
 
@@ -53,6 +55,16 @@ class MyApp(ShowBase):
     
     def movePositiveX(self, task):
         self.fighter.setX(self.fighter, + 1)
+        return task.cont
+
+    def negativeY(self, keyDown):
+        if keyDown:
+            self.taskMgr.add(self.moveNegativeY, "moveNegativeY")
+        else:
+            self.taskMgr.remove("moveNegativeY")
+    
+    def moveNegativeY(self, task):
+        self.fighter.setY(self.fighter, - 1)
         return task.cont
 
     def quit(self):
