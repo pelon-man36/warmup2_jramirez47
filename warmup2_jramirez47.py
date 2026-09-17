@@ -14,6 +14,7 @@ class MyApp(ShowBase):
         self.camera.setPos(0.0, 0.0, 250.0)
         self.camera.setHpr(0.0, -90.0, 0.0)
 
+        # Below is controls to let user move the sphere about.
         self.accept("escape", self.quit)
         self.accept("arrow_left", self.negativeX, [1])
         self.accept("arrow_left-up", self.negativeX, [0])
@@ -21,6 +22,8 @@ class MyApp(ShowBase):
         self.accept("arrow_right-up", self.positiveX, [0])
         self.accept("arrow_down", self.negativeY, [1])
         self.accept("arrow_down-up", self.negativeY, [0])
+        self.accept("arrow_up", self.positiveY, [1])
+        self.accept("arrow_up-up", self.positiveY, [0])
 
         self.parent = self.loader.loadModel("./Assets/cube.egg")
 
@@ -65,6 +68,16 @@ class MyApp(ShowBase):
     
     def moveNegativeY(self, task):
         self.fighter.setY(self.fighter, - 1)
+        return task.cont
+
+    def positiveY(self, keyDown):
+        if keyDown:
+            self.taskMgr.add(self.movePositiveY, "movePositiveY")
+        else:
+            self.taskMgr.remove("movePositiveY")
+        
+    def movePositiveY(self, task):
+        self.fighter.setY(self.fighter, + 1)
         return task.cont
 
     def quit(self):
